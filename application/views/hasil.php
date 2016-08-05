@@ -75,7 +75,7 @@
           </br> </br>
             <?php
             if ($data_link=="salah") {
-              echo "<h3>Query yang anda masukan tidak ada dalam database</h3>";
+              echo "<h4>Query yang anda masukan tidak ada dalam database</h4>";
               // echo "<script>alert(\"salah\");</script>";
             }else{
               for ($i=0; $i < count($data_link); $i++) { 
