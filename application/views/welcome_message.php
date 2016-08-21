@@ -84,5 +84,8 @@
     <script src="http://localhost/codeigniter/assets/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://localhost/codeigniter/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript">
+        
+    </script>
   </body>
 </html>
