@@ -7,6 +7,8 @@ Class Algoritma{
 	protected $this;
 	
 	public function render($text, $pattern) {
+
+		$pattern_text = ltrim($pattern);
 	    $patlen = strlen($pattern);
 	    $textlen = strlen($text);
 	    $table = $this->makeCharTable($pattern);

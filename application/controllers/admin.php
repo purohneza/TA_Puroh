@@ -17,12 +17,6 @@ class admin extends CI_Controller {
 		$this->load->view('example.php',$output);
 	}
 
-	public function offices()
-	{
-		$output = $this->grocery_crud->render();
-
-		$this->_example_output($output);
-	}
 
 	public function index()
 	{
@@ -35,12 +29,27 @@ class admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('jenishadits');
 			$crud->set_subject('Jenis Hadist');
+			
+			/*
+				Ini adalah fungsi untuk menghilangkan beberapa tampilan,diantaranya:
+				1. read   = $crud->unset_read();
+				2. print  = $crud->unset_print();
+				3. export = $crud->unset_export();
+				4. add    = $crud->unset_add();
+				5. edit   = $crud->unset_edit();
+				6. delete = $crud->unset_delete();
+			*/
+			$crud->unset_read();
+			$crud->unset_print();
+			$crud->unset_export();
+			
 			$crud->columns('hukum');
 
 			$output = $crud->render();
 
 			$this->_example_output($output);
 
+			//$this->load->view('example.php',$output);
 		}catch(Exception $e){
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 		}	
@@ -55,6 +64,8 @@ class admin extends CI_Controller {
 			/*$crud->set_relation('jenishadits','jenishadits','jenishadits');
 			$crud->display_as('jenisHadist','Jenis Hadist');
 			*/
+			$crud->unset_print();
+			$crud->unset_export();
 			$crud->columns('jenisHadist','hadits');
 
 			$output = $crud->render();

@@ -119,14 +119,29 @@ Imam Bukhari dan Imam Muslim telah meriwayatkan dari Aisyah radhiyallahu ‘anha
  جَاءَتَ فاَطِمَةُ بِنْتُ اَبِى حُبَيْشٍ اِلَى النَّبِيُّ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ وَقَلَتْ ياَرَسُوْلُ اللهِ اِنِّى امْرَاَةٌ اُسْتَحَاضُ فَلاَ اَطْهُرُ، اَفَاَدَعُ الصَّلاَةَ؟ فَقَالَ ياَرَسُوْلُ اللهِ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ: لاَ، اِنَّمَا ذَلِكَ عِرْقٌ وَلَيْسَ بِالْحَيْضَةِ فَاِذَااَقْبَلَتِ الْحَيْضَةُ فَاتْرُكِى الصَّلاَةَ، فَاِذَا ذَهَبَ قَدْرُهَا فاَغْسِلِى عَنْكِ الدَّمَ وَصَلِّى
 Fatimah binti Abi Hubaisy telah datang kepada Nabi shallallahu ‘alaihi wa sallam lalu berkata: “Ya Rasulullah, sesungguhnya aku adalah seorang wania yang mengalami istihadhah, sehingga aku tidak bisa suci. Haruskah aku meninggalkan shalat?” Maka jawab Rasulullah SAW: “Tidak, sesungguhnya itu (berasal dari) sebuah otot, dan bukan haid. Jadi, apabila haid itu datang, maka tinggalkanlah shalat. Lalu apabila ukuran waktunya telah habis, maka cucilah darah dari tubuhmu lalu shalatlah.”
 Wallahu a’lam.";
-		echo $kalimat." <br/>";
+		//echo $kalimat." <br/>";
+		echo " <br/>";
 
-		echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+		//echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
 		$casefolding =  $this->preprocessing->casefolding($kalimat);
+		echo "<b>Casefolding :</b>";
 		echo "<pre>";
 		print_r($casefolding);
 		echo "</pre>";
 
+		$tokenizing =  $this->preprocessing->tokenizing($kalimat);
+		echo " <br/>";
+		echo "<b>Tokenizing :</b>";
+		echo "<pre>";
+		print_r($tokenizing);
+		echo "</pre>";
+
+			
 	}
+	public function nilai($nilai_1,$nilai_2){
+
+		echo $nilai_1;
+	}
+
 }
 ?>

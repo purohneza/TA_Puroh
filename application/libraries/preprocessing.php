@@ -1,9 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-/*
- * Created By Muhamad Jafar Sidik
- * 081322091912 
- */
 
 require 'stem.php';
 
@@ -31,7 +27,7 @@ class Preprocessing {
     }
 	
 	public function tokenizing($text){
-        $data = $this->case_folding();        
+        $data = $this->casefolding($text);        
         foreach ($data as $key => $values) {
             $case[] = explode(" ", $values);
         }
@@ -42,35 +38,33 @@ class Preprocessing {
         return $response;        
     }
 
-    public function filtering(){
+    public function filtering($kalimat){
         /*menghilangkan array yang sama*/
-        $data = $this->tokenizing();
+        $data = $this->tokenizing($kalimat);
         foreach ($data as $key => $value) {
             
             $index_array = $this->array_empty_remover($value);
 
-            $uniq =  array_unique($index_array);
+            //$uniq =  array_unique($index_array);
             
-            $filtering[]  = array_merge($uniq);
+            $filtering[]  = $$index_array; //array_merge($uniq);
 
         }
         
         return $filtering;
 
     }
+    public function stopword($array_kalimat,$array_stopword){
+
+        return str_ireplace($array_stopword, "", $array_kalimat);
+    }
+
     public function array_empty_remover($array, $remove_null_number = true) {
-        $new_array = array();
-        $null_exceptions = array();
-        foreach ($array as $key => $value) {
-            $value = trim($value);
-            if($remove_null_number) {
-                $null_exceptions[] = '0';
-            }
-            if(!in_array($value, $null_exceptions) && $value != "") {
-                $new_array[] = $value;
-            }
-        }
-        return $new_array;
+        $array_remove =  array(
+            "yang",
+            "dan",
+
+        );
     }
     public function stemming($word){
 
