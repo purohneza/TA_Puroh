@@ -8,6 +8,7 @@ class Welcome extends CI_Controller {
 		$this->load->model('tabel');
 		$this->load->library('Algoritma');
 		$this->load->library('Preprocessing');
+		$this->load->library('simple_html_dom');
 	}
 
 	
@@ -24,11 +25,48 @@ class Welcome extends CI_Controller {
 	public function pencarian()
 	{
 		$q = $this->input->post('query');
-		$data['data_link'] = $this->tabel->searching($q);
-		
-		$this->load->view('hasil',$data);
+		$data = $this->tabel->searching($q);
+		echo "<table class='table'>
+			<tr>
+				<td>No</td>
+				<td>Source</td>
+				<td>Description</td>
+				<td>Detail</td>
+			</tr>
+			";
+			$no =  1;
+			if($data < 0){
+				echo "Tidak ada data";
+			}
+			//print_r($data['desc']);
+		foreach ($data as $key => $value) {
+			echo "<tr>";
+			echo "<td>".$no."</td>";
+			echo "<td>".htmlspecialchars($value->link)."</td>";
+			echo "<td>".htmlspecialchars($value->desc)."</td>";
+			
+			echo "<td><a id='detail' onclick='details(this);' data-query='".$q."' data-link='".$value->link."' href='#'>Detail</a></td>";
+			echo "</tr>";
+			$no++;
+		}
+		echo "</table>";
 	}
 
+	public function details(){
+		$details 	= $this->input->post('details');
+		$link 		= $this->input->post('link');
+		
+		/*scrapping Dimulai*/
+		
+		$data 	= $this->__curl("http://www.fiqihwanita.com/xmlrpc.php");
+
+		//$ret = $data->find('div[.post-single-content box mark-links]'); 
+		echo "<pre/>";
+		print_r($data);
+		//print_r($ret);
+		/*$casefolding =  $this->preprocessing->casefolding($ret);
+		print_r($casefolding);*/
+	}
 	
 	public function test(){
 		$text 		= "WAKTU NIFAS";
@@ -141,6 +179,27 @@ Wallahu a’lam.";
 	public function nilai($nilai_1,$nilai_2){
 
 		echo $nilai_1;
+	}
+
+	private function __curl($uri) {
+
+	    $curl = curl_init();
+	    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+	    curl_setopt($curl, CURLOPT_HEADER, false);
+	    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+	    curl_setopt($curl, CURLOPT_URL, $uri);
+	    curl_setopt($curl, CURLOPT_REFERER, $uri);
+	    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+	    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.125 Safari/533.4");
+	    $str = curl_exec($curl);
+	    curl_close($curl);
+
+	    // Create a DOM object
+	    $dom = new simple_html_dom();
+	    // Load HTML from a string
+	    $dom->load($str);
+
+	    return $dom;
 	}
 
 }

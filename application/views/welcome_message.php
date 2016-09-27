@@ -12,17 +12,17 @@
     <title>Mesin pencari</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://localhost/codeigniter/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>/assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href=".http://localhost/codeigniter/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="starter-template.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>assets/css/starter-template.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="http://localhost/codeigniter/assets/js/ie-emulation-modes-warning.js"></script>
+    <script src="<?php echo base_url();?>assets/js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -57,7 +57,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="http://localhost/codeigniter/index.php/welcome/profil">Profil</a></li>
+            <li><a href="<?php echo base_url();?>index.php/welcome/profil">Profil</a></li>
             </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -67,12 +67,27 @@
       <div class="starter-template">
         <h1>Mesin Pencari</h1>
      
-          <form class="navbar-form navbar-centre" method="post" action="http://localhost/codeigniter/index.php/welcome/pencarian">
+          <form id="form_cari" class="navbar-form navbar-centre" method="post">
             <div class="form-group">
               <input name="query" type="text" size='90' placeholder="Masukan pencarian" class="form-control">
               <br></br>
-            <button type="submit" class="btn btn-success">Telusuri</button>
+              <div id="loading"></div>
+            <button type="button" onclick="cari(this);"  class="btn btn-success">Telusuri</button>
           </form>
+      </div>
+        <div class="row">
+          <div class="col-ls-12">
+          <div id="data"></div>
+          </div>
+        </div>
+          <div id="loading2"></div>
+        <hr/>
+         <div class="row">
+          <div class="col-ls-12">
+          <div id="data2"></div>
+          </div>
+        </div>
+      </div>  
     </div>
 
 
@@ -80,12 +95,54 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="http://localhost/codeigniter/assets/js/bootstrap.min.js"></script>
+    <script>window.jQuery || document.write('<script src="<?php echo base_url();?>/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="<?php echo base_url();?>/assets/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://localhost/codeigniter/assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script type="text/javascript">
-        
+    <script src="<?php echo base_url();?>/assets/js/ie10-viewport-bug-workaround.js"></script>
+       <script type="text/javascript">
+    function cari(){
+        $.ajax({
+            url: "<?php echo site_url();?>/welcome/pencarian",
+            type: "POST",
+            //dataType:'json',
+            data: $("#form_cari").serialize(),
+            beforeSend: function(){
+                $("#loading").text("Mohon Tunggu Sebentar.."); 
+            },
+            success:function(data){
+                $("#loading").text(""); 
+                    $("#data").html(data); 
+                
+            },
+            error:function(data){
+                $("#loading").text(data);
+            }        
+        });
+    }
+
+ function details(){
+
+   $.ajax({
+            url: "<?php echo site_url();?>/welcome/details",
+            type: "POST",
+            //dataType:'json',
+            data: "details:" + $("#detail").data("query") + "&link="+$("#detail").data("link"),
+            beforeSend: function(){
+                $("#loading2").text("Mohon Tunggu Sebentar.."); 
+            },
+            success:function(data){
+                $("#loading2").text(""); 
+                $("#data2").html(data); 
+                
+            },
+            error:function(data){
+                $("#loading").text(data);
+            }        
+        });
+//alert($("#detail").data("query"));
+}
+
+
     </script>
   </body>
 </html>

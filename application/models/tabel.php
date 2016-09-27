@@ -11,17 +11,22 @@ class Tabel extends CI_Model {
 
 	public function searching($kata)
 	{
-		$query = $this->db->query('select link FROM linkhadits WHERE hadits LIKE "%'.$kata.'%"');
-		$ket = 0;
+		$query = $this->db->query('select * FROM linkhadits WHERE 
+			hadits LIKE "%'.$kata.'%" or
+			link LIKE "%'.$kata.'%"
+			')->result();
+		/*$ket = 0;
+		$data =  array();
 		foreach ($query->result() as $value)
 			{
-			$data[] = $value->link;
+			$data['link'] = $value->link;
+			$data['desc'] = $value->desc;
 			$ket = 1;
-			}
-		if ($ket==0) {
-			$data="salah";
-		}
-		return $data;
+			}*/
+		/*if ($ket==0) {
+			$data['zero']="Tidak ada data";
+		}*/
+		return $query;
 	}
 }
 
