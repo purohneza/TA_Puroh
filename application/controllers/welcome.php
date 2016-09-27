@@ -67,15 +67,14 @@ class Welcome extends CI_Controller {
 		$details 	= $this->input->post('details');
 		$link 		= $this->input->post('link');
 		
-		/*scrapping Dimulai*/
-		
+		/*scrapping Dimulai*/		
 		$data 	= $this->__curl($link);
 
-		//$ret = $data->find('div[.post-single-content box mark-links]'); 
-		print_r($data);
-		//print_r($ret);
-		/*$casefolding =  $this->preprocessing->casefolding($ret);
-		print_r($casefolding);*/
+		$ret = $data->find('div[.post-single-content box mark-links]'); 
+		/*jika ketemu datanya dari web makan proses text processing dimulai*/
+		
+		$casefolding =  $this->preprocessing->casefolding($ret);
+		$tokenizing  =  $this->preprocessing->tokenizing($ret);
 	}
 	
 	public function test(){
@@ -83,6 +82,7 @@ class Welcome extends CI_Controller {
 		$pettern 	= "NIFAS";
 		$render = $this->algoritma->render($text,$pettern);
 		print_r($render);
+
 	}
 
 	public function textprocessing(){
@@ -186,10 +186,7 @@ Wallahu a’lam.";
 
 			
 	}
-	public function nilai($nilai_1,$nilai_2){
-
-		echo $nilai_1;
-	}
+	
 
 	private function __curl($uri) {
 
