@@ -25,7 +25,20 @@ class Welcome extends CI_Controller {
 	public function pencarian()
 	{
 		$q = $this->input->post('query');
-		$data = $this->tabel->searching($q);
+		$explode = explode(" ",$q);
+		$pettern 	= end($explode);
+		$render = $this->algoritma->render($q,$pettern);
+		$data = $this->tabel->searching($pettern);
+
+		if($render == 0){
+			echo "Algoritma Bayermore tidak menemukan text yang cocok";
+			exit();
+		}
+
+		if(empty($data)){
+				echo "Tidak ada data";
+				exit();
+			}
 		echo "<table class='table'>
 			<tr>
 				<td>No</td>
@@ -35,9 +48,7 @@ class Welcome extends CI_Controller {
 			</tr>
 			";
 			$no =  1;
-			if($data < 0){
-				echo "Tidak ada data";
-			}
+			
 			//print_r($data['desc']);
 		foreach ($data as $key => $value) {
 			echo "<tr>";
@@ -58,10 +69,9 @@ class Welcome extends CI_Controller {
 		
 		/*scrapping Dimulai*/
 		
-		$data 	= $this->__curl("http://www.fiqihwanita.com/xmlrpc.php");
+		$data 	= $this->__curl($link);
 
 		//$ret = $data->find('div[.post-single-content box mark-links]'); 
-		echo "<pre/>";
 		print_r($data);
 		//print_r($ret);
 		/*$casefolding =  $this->preprocessing->casefolding($ret);
