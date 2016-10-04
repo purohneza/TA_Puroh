@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+//use PHPHtmlParser\Dom;
+
 class Welcome extends CI_Controller {
 
 	function __construct(){
@@ -25,6 +27,12 @@ class Welcome extends CI_Controller {
 	public function pencarian()
 	{
 		$q = $this->input->post('query');
+		
+		if(empty($q)){
+			echo "Text Tidak Boleh Kosong";
+			exit();
+		}
+
 		$explode = explode(" ",$q);
 		$pettern 	= end($explode);
 		$render = $this->algoritma->render($q,$pettern);
@@ -68,15 +76,60 @@ class Welcome extends CI_Controller {
 		$link 		= $this->input->post('link');
 		
 		/*scrapping Dimulai*/		
-		$data 	= $this->__curl($link);
+		$data 	= $this->__curl($link)->plaintext;
 
-		$ret = $data->find('div[.post-single-content box mark-links]'); 
-		/*jika ketemu datanya dari web makan proses text processing dimulai*/
+		$casefolding =  $this->preprocessing->casefolding($data);
+		$tokenizing  =  $this->preprocessing->tokenizing($casefolding);
 		
-		$casefolding =  $this->preprocessing->casefolding($ret);
-		$tokenizing  =  $this->preprocessing->tokenizing($ret);
+		echo "<div class='row'>
+          <div class='col-md-6'>
+          <h3>Hadist Web</h3>
+          <table class='table'>
+			<tr>
+				<th>No</th>
+				<th>Data</th>
+				
+			</tr>
+			";
+			$no = 1;
+		foreach ($tokenizing as $key => $value) {
+			echo "<tr>";
+			echo "<td>".$no."</td>";
+			echo "<td>".htmlspecialchars($value)."</td>";
+			echo "</tr>";
+			$no++;
+		}
+		echo "</table></div>
+		<div class='col-md-6'>
+          <h3>Hasil Kemiripan</h3>
+          <table class='table'>
+			<tr>
+				<th>No</th>
+				<th>Data</th>
+			</tr>
+			</table>
+		</div>";
+		echo "</div>";
+		//print_r($tokenizing);
 	}
-	
+
+	public function curl_test(){
+		$url = "http://www.fiqihwanita.com/hukum-minum-obat-pencegah-haid-agar-dapat-berpuasa/";
+		$data 	= $this->__curl($url)->plaintext;
+		
+		//$ret = $data->find('div[.post-single-content box mark-links]'); 
+		print_r($data);
+
+//$ret = $html->find('div[.post-single-content box mark-links]'); 
+		/*echo "<pre>";
+		*/
+		/*foreach( as $article) {
+			print_r($article);
+		}*//*
+		$s = $html->find('div.post-single-content');
+		print_r($s);*/
+
+	}
 	public function test(){
 		$text 		= "WAKTU NIFAS";
 		$pettern 	= "NIFAS";

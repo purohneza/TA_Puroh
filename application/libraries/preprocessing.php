@@ -17,23 +17,16 @@ class Preprocessing {
 
     }
 	public function casefolding($text){
-
-        $looping_data = $this->pemecah_kalimat($text);
-        foreach ($looping_data as $key => $value) {
-            $input = preg_replace('@[?:;,+=!~#()0-9]+@', " ", strtolower($value));//("@[^\d:,]+@i"," ",strtolower($value));
-            $data[] = $input;
-        }
-        return $data;
+        $input = preg_replace('@[?:;,+=|!~#()0-9]+@', "  ", strtolower($text));//("@[^\d:,]+@i"," ",strtolower($value));
+        return $input;
     }
 	
 	public function tokenizing($text){
-        $data = $this->casefolding($text);        
-        foreach ($data as $key => $values) {
-            $case[] = explode(" ", $values);
-        }
+        
+        $pecah = explode(".", $text);
 
-        foreach ($case as $key => $value) {
-            $response[] =  $value;   
+        foreach ($pecah as $key => $values) {
+            $response[] =  $values;      
         }
         return $response;        
     }

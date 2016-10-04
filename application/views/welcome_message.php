@@ -69,7 +69,7 @@
      
           <form id="form_cari" class="navbar-form navbar-centre" method="post">
             <div class="form-group">
-              <input name="query" type="text" size='90' placeholder="Masukan pencarian" class="form-control">
+              <input name="query" id="query" type="text" size='90' placeholder="Masukan pencarian" class="form-control">
               <br></br>
               <div id="loading"></div>
             <button type="button" onclick="cari(this);"  class="btn btn-success">Telusuri</button>
@@ -82,11 +82,11 @@
         </div>
           <div id="loading2"></div>
         <hr/>
-         <div class="row">
-          <div class="col-ls-12">
+         <!-- <div class="row"> -->
+          <!-- <div class="col-ls-12"> -->
           <div id="data2"></div>
-          </div>
-        </div>
+          <!-- </div> -->
+        <!-- </div> -->
       </div>  
     </div>
 
@@ -101,6 +101,9 @@
     <script src="<?php echo base_url();?>/assets/js/ie10-viewport-bug-workaround.js"></script>
        <script type="text/javascript">
     function cari(){
+          str = $("#query").val();
+      var n = str.length
+        if(n >= 4){
         $.ajax({
             url: "<?php echo site_url();?>/welcome/pencarian",
             type: "POST",
@@ -118,6 +121,9 @@
                 $("#loading").text(data);
             }        
         });
+      }else{
+         $("#data").html("Mimimal 4 Karakter");
+      }
     }
 
  function details(){
