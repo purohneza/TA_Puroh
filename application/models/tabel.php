@@ -11,9 +11,13 @@ class Tabel extends CI_Model {
 
 	public function searching($kata)
 	{
-		$query = $this->db->query('select * FROM linkhadits WHERE 
-			hadits LIKE "%'.$kata.'%" or
-			link LIKE "%'.$kata.'%"
+		$query = $this->db->query('
+			select h.hadits, l.link FROM 
+			linkhadits l  
+			join tbhadits h ON l.id_link = h.id_had
+			WHERE 
+			h.hadits LIKE "%'.$kata.'%" or
+			l.link LIKE "%'.$kata.'%"
 			')->result();
 		/*$ket = 0;
 		$data =  array();

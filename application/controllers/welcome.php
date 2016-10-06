@@ -51,7 +51,7 @@ class Welcome extends CI_Controller {
 			<tr>
 				<td>No</td>
 				<td>Source</td>
-				<td>Description</td>
+				
 				<td>Detail</td>
 			</tr>
 			";
@@ -62,7 +62,7 @@ class Welcome extends CI_Controller {
 			echo "<tr>";
 			echo "<td>".$no."</td>";
 			echo "<td>".htmlspecialchars($value->link)."</td>";
-			echo "<td>".htmlspecialchars($value->desc)."</td>";
+			//echo "<td>".htmlspecialchars($value->desc)."</td>";
 			
 			echo "<td><a id='detail' onclick='details(this);' data-query='".$q."' data-link='".$value->link."' href='#'>Detail</a></td>";
 			echo "</tr>";
@@ -76,23 +76,37 @@ class Welcome extends CI_Controller {
 		$link 		= $this->input->post('link');
 		
 		/*scrapping Dimulai*/		
-		$data 	= $this->__curl($link)->plaintext;
+		$data 	= $this->__curl($link);
+		$ret = $data->find('div.post-single-content'); 
+		foreach ($ret as $key => $value) {
+			$text = $value->plaintext;
+		}
 
-		$casefolding =  $this->preprocessing->casefolding($data);
+		$casefolding =  $this->preprocessing->casefolding($text);
 		$tokenizing  =  $this->preprocessing->tokenizing($casefolding);
-		
+		$show = array_filter($tokenizing);
 		echo "<div class='row'>
           <div class='col-md-6'>
           <h3>Hadist Web</h3>
           <table class='table'>
 			<tr>
 				<th>No</th>
-				<th>Data</th>
-				
+				<th>Data</th>				
 			</tr>
 			";
 			$no = 1;
-		foreach ($tokenizing as $key => $value) {
+		foreach ($show as $key => $value) {
+			//$this->db->select('title, content, date');
+
+			$this->db->select('hadits');
+			$this->db->like('hadits', $value);
+			$query = $this->db->get('tbhadits');
+			//echo "<pre/>";
+			$rows = $query->result();
+			foreach ($rows as $key => $data_match_row) {
+				$row[] = $data_match_row;
+			}
+			
 			echo "<tr>";
 			echo "<td>".$no."</td>";
 			echo "<td>".htmlspecialchars($value)."</td>";
@@ -106,29 +120,40 @@ class Welcome extends CI_Controller {
 			<tr>
 				<th>No</th>
 				<th>Data</th>
-			</tr>
-			</table>
+			</tr>";
+			$noo = 1;
+		if(!empty($row)){
+			foreach ($row as $key => $values) {
+			
+				echo "<tr>
+					<td>".$noo."</td>
+					<td>".$values->hadits."</td>
+				</tr>";
+				$noo++;
+			}
+		}
+		echo "</table>
 		</div>";
 		echo "</div>";
-		//print_r($tokenizing);
+		
 	}
 
 	public function curl_test(){
-		$url = "http://www.fiqihwanita.com/hukum-minum-obat-pencegah-haid-agar-dapat-berpuasa/";
-		$data 	= $this->__curl($url)->plaintext;
+		/*$url = "http://localhost/web_puroh/index.html";
+		$data 	= $this->__curl($url);
 		
-		//$ret = $data->find('div[.post-single-content box mark-links]'); 
-		print_r($data);
+		$ret = $data->find('div[id=content_scrap]'); 
+		foreach ($ret as $key => $value) {
+			echo $value->plaintext;
+		}*/
 
-//$ret = $html->find('div[.post-single-content box mark-links]'); 
-		/*echo "<pre>";
-		*/
-		/*foreach( as $article) {
-			print_r($article);
-		}*//*
-		$s = $html->find('div.post-single-content');
-		print_r($s);*/
-
+		$url = "http://www.fiqihwanita.com/hukum-minum-obat-pencegah-haid-agar-dapat-berpuasa/";
+		$data 	= $this->__curl($url);
+		
+		$ret = $data->find('div.post-single-content'); 
+		foreach ($ret as $key => $value) {
+			echo $value->plaintext;
+		}
 	}
 	public function test(){
 		$text 		= "WAKTU NIFAS";
