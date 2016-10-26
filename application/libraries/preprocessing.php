@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require 'stem.php';
+include_once 'PorterStemmer.php';
 
 class Preprocessing {
 
@@ -17,13 +17,13 @@ class Preprocessing {
 
     }
 	public function casefolding($text){
-        $input = preg_replace('@[?:;,+=|!~#()0-9]+@', "  ", strtolower($text));//("@[^\d:,]+@i"," ",strtolower($value));
+        $input = preg_replace('@[?:;,+=|!~#()0-9]+@', "", strtolower($text));//("@[^\d:,]+@i"," ",strtolower($value));
         return $input;
     }
 	
 	public function tokenizing($text){
         
-        $pecah = explode(".", $text);
+        $pecah = explode('.', $text);
 
         foreach ($pecah as $key => $values) {
             $response[] =  $values;      

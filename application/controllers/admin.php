@@ -22,13 +22,13 @@ class admin extends CI_Controller {
 	{
 		$this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 	}
-	public function jenishadits(){
+	public function query_search(){
 		try{
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
-			$crud->set_table('jenishadits');
-			$crud->set_subject('Jenis Hadist');
+			$crud->set_table('query_search');
+			$crud->set_subject('Query Search');
 			
 			/*
 				Ini adalah fungsi untuk menghilangkan beberapa tampilan,diantaranya:
@@ -42,11 +42,10 @@ class admin extends CI_Controller {
 			$crud->unset_read();
 			$crud->unset_print();
 			$crud->unset_export();
-			
-			$crud->columns('hukum');
+			/*
+			$crud->columns('hukum');*/
 
 			$output = $crud->render();
-
 			$this->_example_output($output);
 
 			//$this->load->view('example.php',$output);
@@ -54,19 +53,21 @@ class admin extends CI_Controller {
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 		}	
 	}
-	public function  tbhadits(){
+
+	public function hadits(){
 		try{
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
-			$crud->set_table('tbhadits');
+			$crud->set_table('resource_hadist');
 			$crud->set_subject('Hadist');
-			/*$crud->set_relation('jenishadits','jenishadits','jenishadits');
-			$crud->display_as('jenisHadist','Jenis Hadist');
-			*/
+			
+			$crud->display_as('id_query_search','Jenis Hadist');
+			$crud->set_relation('id_query_search','query_search','name');
+			//$crud->columns('arabic_source','indonesian_source','name');
+			$crud->unset_texteditor('arabic_source','indonesian_source');
 			$crud->unset_print();
 			$crud->unset_export();
-			$crud->columns('jenisHadist','hadits');
 
 			$output = $crud->render();
 

@@ -11,25 +11,11 @@ class Tabel extends CI_Model {
 
 	public function searching($kata)
 	{
-		$query = $this->db->query('
-			select h.hadits, l.link FROM 
-			linkhadits l  
-			join tbhadits h ON l.id_link = h.id_had
-			WHERE 
-			h.hadits LIKE "%'.$kata.'%" or
-			l.link LIKE "%'.$kata.'%"
-			')->result();
-		/*$ket = 0;
-		$data =  array();
-		foreach ($query->result() as $value)
-			{
-			$data['link'] = $value->link;
-			$data['desc'] = $value->desc;
-			$ket = 1;
-			}*/
-		/*if ($ket==0) {
-			$data['zero']="Tidak ada data";
-		}*/
+		$query = $this->db->query("
+			SELECT *
+				FROM query_search
+				WHERE (code LIKE '%".$kata."%' OR name LIKE '%".$kata."%' OR tags LIKE '%".$kata."%' OR source_uri LIKE '%".$kata."%')
+			")->result();
 		return $query;
 	}
 }
