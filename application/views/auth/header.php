@@ -38,14 +38,7 @@
     		text-align:center;
     	}
     </style>
-    <?php 
-foreach($css_files as $file): ?>
-	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
-<?php endforeach; ?>
-<?php foreach($js_files as $file): ?>
-	<script src="<?php echo $file; ?>"></script>
-<?php endforeach; ?>
-
+    
   </head>
 
 <body>
@@ -62,11 +55,11 @@ foreach($css_files as $file): ?>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
+            <?php if ($this->ion_auth->logged_in()): ?>
             <li class="active"><a href="<?php echo base_url();?>">Home</a></li>
             <li><a href='<?php echo site_url('admin/query_search')?>'>Query Search</a></li>
             <li><a href='<?php echo site_url('admin/hadits')?>'>Hadist</a></li>
             <li><a href='<?php echo site_url('auth')?>'>Users</a></li>
-            <?php if ($this->ion_auth->logged_in()): ?>
             <li><a href='<?php echo site_url('auth/logout')?>'>Logout</a></li>
         <?php endif;?>
             </ul>
@@ -76,11 +69,4 @@ foreach($css_files as $file): ?>
 	<div class="container">
     	<div class="row">
 			<div class="col-md-12">
-			<?php echo $output; ?>
-			</div>
-    	</div>
-    </div><!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    </body>
-</html>
+

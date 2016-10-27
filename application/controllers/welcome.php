@@ -80,13 +80,14 @@ class Welcome extends CI_Controller {
 		$data 	= $this->__curl($link);
 		$ret = $data->find('div.post-single-content'); 
 		foreach ($ret as $key => $value) {
-			$text = $value;
+			$text = $value->plaintext;
 		}
 
 		$casefolding =  $this->preprocessing->casefolding($text);
 		/*$tokenizing  =  $this->preprocessing->tokenizing($casefolding);
 		$show = array_filter($tokenizing);*/
 		$explode_kiri = explode(" ", $casefolding);
+
 		echo "<div class='row'>
           <div class='col-md-6'>
           <h3>Hasil Scrapping</h3>
@@ -98,7 +99,6 @@ class Welcome extends CI_Controller {
 			<tr>
 				<th>No</th>
 				<th>Data</th>
-				<th>Hasil Similarity</th>
 				<th>Nilai</th>
 			</tr>";
 			
@@ -115,7 +115,7 @@ class Welcome extends CI_Controller {
 				echo "<tr>
 					<td>".$noo."</td>
 					<td>".$values->indonesian_source."</td>
-					<td>".intval($percent)."%</td>
+					
 					<td>".algoritma::cosinusTokens($explode_kiri,$explode_kanan)."</td>
 				</tr>";
 				$noo++;
@@ -145,6 +145,25 @@ class Welcome extends CI_Controller {
 	    $dom->load($str);
 
 	    return $dom;
+	}
+	public function test_rumus(){
+		$vektor_a =  array(
+			'pasukan',
+			'pengibar',
+			'bendera',
+			'pusaka'
+			);
+		$vektor_b =  array(
+			'paskibraka',
+			'adalah',
+			'singkatan',
+			'dari',
+			'pasukan',
+			'pengibar',
+			'bendera',
+			'pusaka'			
+			);
+		echo algoritma::cosinusTokens($vektor_a,$vektor_b);
 	}
 }
 ?>
