@@ -61,10 +61,12 @@ class Welcome extends CI_Controller {
 		foreach ($data as $key => $value) {
 			echo "<tr>";
 			echo "<td>".$no."</td>";
-			echo "<td>".htmlspecialchars($value->source_uri)."</td>";
+
+			echo "<td>".htmlspecialchars($value->uri)."</td>";
 			//echo "<td>".htmlspecialchars($value->desc)."</td>";
 			
-			echo "<td><a id='detail' onclick='details(this);' data-id_query_search='".$value->id."' data-query='".$q."' data-link='".$value->source_uri."' href='#'>Detail</a></td>";
+			echo "<td><a id='detail' onclick='details(this);' data-id_query_search='".$value->id."' data-query='".$q."' data-link='".$value->uri."' href='#'>Detail</a></td>";
+
 			echo "</tr>";
 			$no++;
 		}
@@ -111,7 +113,7 @@ class Welcome extends CI_Controller {
 			foreach ($rows as $key => $values) {
 			$explode_kanan = explode(" ", $values->indonesian_source);
 			
-			similar_text($value, $values->indonesian_source, $percent);
+
 				echo "<tr>
 					<td>".$noo."</td>
 					<td>".$values->indonesian_source."</td>

@@ -12,9 +12,15 @@ class Tabel extends CI_Model {
 	public function searching($kata)
 	{
 		$query = $this->db->query("
-			SELECT *
-				FROM query_search
-				WHERE (code LIKE '%".$kata."%' OR name LIKE '%".$kata."%' OR tags LIKE '%".$kata."%' OR source_uri LIKE '%".$kata."%')
+
+			SELECT 
+				qs.id as id,
+				su.uri as uri,
+				su.id as idx
+				FROM query_search qs
+				join source_uri su on su.id_query_search = qs.id
+				WHERE (qs.code LIKE '%".$kata."%' OR qs.name LIKE '%".$kata."%' OR qs.tags LIKE '%".$kata."%' )
+
 			")->result();
 		return $query;
 	}

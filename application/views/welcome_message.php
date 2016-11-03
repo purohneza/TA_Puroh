@@ -126,16 +126,16 @@
       }
     }
 
- function details(){
+
+ function details(a){
 
    $.ajax({
             url: "<?php echo site_url();?>/welcome/details",
             type: "POST",
             //dataType:'json',
-            data: "details:" + $("#detail").data("query") +
-            "&link="+$("#detail").data("link")+
-            "&id_query_search="+$("#detail").data("id_query_search")
-            ,
+
+            data: "details:" + a.getAttribute("data-query") + "&link="+a.getAttribute("data-link") + "&id_query_search="+a.getAttribute("data-id_query_search"),
+
             beforeSend: function(){
                 $("#loading2").text("Mohon Tunggu Sebentar.."); 
             },
